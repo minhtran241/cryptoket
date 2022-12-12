@@ -132,7 +132,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className="hidden md:flex ml-2">
+      <div className="hidden md:flex ml-2 cursor-pointer">
         {isOpen ? (
           <Image
             src={images.cross}
