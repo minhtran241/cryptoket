@@ -42,6 +42,7 @@ contract NFTMarketplace is
 
     constructor() ERC721("Metaverse Tokens", "METT") {}
 
+    /* Updates the listing price of the contract */
     function updateListingPrice(uint256 _listingPrice)
         public
         payable
@@ -50,6 +51,7 @@ contract NFTMarketplace is
         listingPrice = _listingPrice;
     }
 
+    /* Mints a token and lists it in the marketplace */
     function createToken(string memory uri, uint256 price)
         external
         payable
@@ -72,8 +74,11 @@ contract NFTMarketplace is
         require(price > 0, "Price must be at least 1");
         require(
             msg.value == listingPrice,
-            "Price must be equl to listing price"
+            "Price must be equal to listing price"
         );
+
+        // Transfer token from seller to the Marketplace.
+        _transfer(msg.sender, address(this), tokenId);
 
         // Add item to MarketItem.
         idToMarketIitem[tokenId] = MarketItem(
@@ -83,9 +88,6 @@ contract NFTMarketplace is
             price,
             false
         );
-
-        // Transfer token from seller to the Marketplace.
-        _transfer(msg.sender, address(this), tokenId);
 
         // Emit event: MarketItemCreated.
         emit MarketItemCreated(
@@ -97,6 +99,7 @@ contract NFTMarketplace is
         );
     }
 
+    /* Allows someone to resell a token they have purchased */
     function resellToken(uint256 tokenId, uint256 price) public payable {
         require(
             idToMarketIitem[tokenId].owner == msg.sender,
@@ -107,6 +110,9 @@ contract NFTMarketplace is
             "Price must be equal to listing price"
         );
 
+        // Transfer token from reseller to Marketplace.
+        _transfer(msg.sender, address(this), tokenId);
+
         // Update properties of the resold NFT.
         idToMarketIitem[tokenId].sold = false;
         idToMarketIitem[tokenId].price = price;
@@ -115,9 +121,31 @@ contract NFTMarketplace is
 
         // Decrement number of items sold.
         _itemSoldCounter.decrement();
+    }
 
-        // Transfer token from reseller to Marketplace.
-        _transfer(msg.sender, address(this), tokenId);
+    /* Creates the sale of a marketplace item */
+    /* Transfers ownership of the item, as well as funds between parties */
+    function createMarketSale(uint256 tokenId) public payable {
+        require(
+            msg.value == idToMarketIitem[tokenId].price,
+            "Please submit the asking price in order to complete the purchase"
+        );
+
+        // Transfer token from Marketplace to purchaser.
+        _transfer(address(this), msg.sender, tokenId);
+
+        // Transfer listingPrice to Marketplace owner.
+        payable(owner()).transfer(listingPrice);
+        // Transfer NFT price to NFT seller.
+        payable(idToMarketIitem[tokenId].seller).transfer(msg.value);
+
+        // Update properties of the sold NFT.
+        idToMarketIitem[tokenId].owner = payable(msg.sender);
+        idToMarketIitem[tokenId].sold = true;
+        idToMarketIitem[tokenId].seller = payable(address(0));
+
+        // Increment number of items sold.
+        _itemSoldCounter.increment();
     }
 
     function pause() public onlyOwner {
