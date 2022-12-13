@@ -97,6 +97,29 @@ contract NFTMarketplace is
         );
     }
 
+    function resellToken(uint256 tokenId, uint256 price) public payable {
+        require(
+            idToMarketIitem[tokenId].owner == msg.sender,
+            "Only item owner can perform this peration"
+        );
+        require(
+            msg.value == listingPrice,
+            "Price must be equal to listing price"
+        );
+
+        // Update properties of the resold NFT.
+        idToMarketIitem[tokenId].sold = false;
+        idToMarketIitem[tokenId].price = price;
+        idToMarketIitem[tokenId].seller = payable(msg.sender);
+        idToMarketIitem[tokenId].owner = payable(address(this));
+
+        // Decrement number of items sold.
+        _itemSoldCounter.decrement();
+
+        // Transfer token from reseller to Marketplace.
+        _transfer(msg.sender, address(this), tokenId);
+    }
+
     function pause() public onlyOwner {
         _pause();
     }
