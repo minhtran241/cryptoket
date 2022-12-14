@@ -140,8 +140,11 @@ const NFTDetails = () => {
             <Button
               btnName="List on Marketplace"
               classStyles="mr-5 sm:mr-0 sm:mb-5 rounded-xl"
-							handleClick={() => (
-								router.push(`/resell-nft?tokenId=${nft.tokenId}&tokenURI=${nft.tokenURI}`))}
+              handleClick={() =>
+                router.push(
+                  `/resell-nft?tokenId=${nft.tokenId}&tokenURI=${nft.tokenURI}`
+                )
+              }
             />
           ) : (
             <Button
@@ -198,7 +201,7 @@ const NFTDetails = () => {
             <div className="flexCenter flex-col">
               <Button
                 btnName="Check it out"
-                classStyles="sm:mb-5 sm:mr-0 rounded-xl"
+                classStyles="sm:mb-5 sm:mr-0 rounded-xl cursor-pointer"
                 handleClick={() => router.push('/my-nfts')}
               />
             </div>
