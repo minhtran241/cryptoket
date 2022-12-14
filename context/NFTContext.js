@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Web3Model from 'web3modal';
+import Web3Modal from 'web3modal';
 import { ethers } from 'ethers';
 import axios from 'axios';
 import { Buffer } from 'buffer';
@@ -93,7 +93,7 @@ export const NFTProvider = ({ children }) => {
   };
 
   const createSale = async (url, formInputPrice) => {
-    const web3Modal = new Web3Model();
+    const web3Modal = new Web3Modal();
     const connection = await web3Modal.connect();
     const provider = new ethers.providers.Web3Provider(connection);
     const signer = provider.getSigner();
@@ -111,9 +111,40 @@ export const NFTProvider = ({ children }) => {
   const fetchNFTs = async () => {
     const provider = new ethers.providers.JsonRpcProvider();
     const contract = fetchContract(provider);
-
     const data = await contract.fetchMarketItems();
-    console.log(data);
+    const items = await Promise.all(
+      data.map(async ({ tokenId, seller, owner, price: unformattedPrice }) => {
+        const tokenURI = await contract.tokenURI(tokenId);
+        const {
+          data: { name, description, image },
+        } = await axios.get(tokenURI);
+        const price = ethers.utils.formatEther(unformattedPrice);
+
+        return {
+          price,
+          tokenId: tokenId.toNumber(),
+          seller,
+          owner,
+          name,
+          description,
+          image,
+          tokenURI,
+        };
+      })
+    );
+    return items;
+  };
+
+  const fetchMyNFTsOrListedNFTs = async (type) => {
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+    const contract = fetchContract(signer);
+    const data =
+      type === 'fetchItemsListed'
+        ? await contract.fetchItemsListed()
+        : await contract.fetchMyNFTs();
 
     const items = await Promise.all(
       data.map(async ({ tokenId, seller, owner, price: unformattedPrice }) => {
@@ -147,6 +178,7 @@ export const NFTProvider = ({ children }) => {
         uploadToIPFS,
         createNFT,
         fetchNFTs,
+        fetchMyNFTsOrListedNFTs,
       }}
     >
       {children}
