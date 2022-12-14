@@ -92,19 +92,23 @@ export const NFTProvider = ({ children }) => {
     }
   };
 
-  const createSale = async (url, formInputPrice) => {
+  const createSale = async (url, formInputPrice, isReselling, id) => {
     const web3Modal = new Web3Modal();
     const connection = await web3Modal.connect();
     const provider = new ethers.providers.Web3Provider(connection);
     const signer = provider.getSigner();
 
-    const price = ethers.utils.parseEther(formInputPrice);
+    const price = ethers.utils.parseEther(formInputPrice.toString());
     const contract = fetchContract(signer);
     const listingPrice = await contract.listingPrice();
 
-    const transaction = await contract.createToken(url, price, {
-      value: listingPrice.toString(),
-    });
+    const transaction = !isReselling
+      ? await contract.createToken(url, price, {
+          value: listingPrice.toString(),
+        })
+      : await contract.resellToken(id, price, {
+          value: listingPrice.toString(),
+        });
     await transaction.wait();
   };
 
@@ -194,6 +198,7 @@ export const NFTProvider = ({ children }) => {
         fetchNFTs,
         fetchMyNFTsOrListedNFTs,
         buyNFT,
+        createSale,
       }}
     >
       {children}
