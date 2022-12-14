@@ -52,7 +52,7 @@ const ButtonGroup = ({ setActive, router }) => {
 
   return currentAccount ? (
     <Button
-      btnName="Create"
+      btnName="Create NFT"
       classStyles="mx-2 rounded-xl"
       handleClick={() => {
         setActive('');
@@ -61,7 +61,7 @@ const ButtonGroup = ({ setActive, router }) => {
     />
   ) : (
     <Button
-      btnName="Connect"
+      btnName="Connect Wallet"
       classStyles="mx-2 rounded-xl"
       handleClick={connectWallet}
     />

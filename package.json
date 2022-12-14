@@ -8,13 +8,14 @@
     "start": "next start",
     "lint": "next lint",
     "dev:node": "npx hardhat node",
-    "dev:deploy": "npx hardhat run scripts/deploy.js --network localhost"
+    "dev:deploy": "rm -rf artifacts cache && npx hardhat run scripts/deploy.js --network localhost"
   },
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomiclabs/hardhat-waffle": "^2.0.3",
     "@openzeppelin/contracts": "^4.8.0",
     "axios": "^0.26.0",
+    "buffer": "^6.0.3",
     "ethers": "^5.5.4",
     "hardhat": "^2.9.0",
     "ipfs-http-client": "^56.0.1",

@@ -20,7 +20,7 @@ contract NFTMarketplace is
     Counters.Counter private _tokenIdCounter;
     Counters.Counter private _itemSoldCounter;
 
-    uint256 listingPrice = 0.025 ether;
+    uint256 public listingPrice = 0.025 ether;
 
     mapping(uint256 => MarketItem) private idToMarketIitem;
 
