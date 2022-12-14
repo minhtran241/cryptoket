@@ -11,6 +11,13 @@ const MyNFTs = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { fetchMyNFTsOrListedNFTs, currentAccount } = useContext(NFTContext);
 
+  useEffect(() => {
+    fetchMyNFTsOrListedNFTs('fetchMyNFTs').then((items) => {
+      setNfts(items);
+      setIsLoading(false);
+    });
+  }, []);
+
   if (isLoading) {
     return (
       <div className="flexStart min-h-screen">

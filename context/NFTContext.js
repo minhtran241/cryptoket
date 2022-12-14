@@ -27,7 +27,7 @@ export const NFTProvider = ({ children }) => {
     if (accounts.length) {
       setCurrentAccount(accounts[0]);
     } else {
-      console.log('No accounts found.');
+      alert('No accounts found.');
     }
   };
 
@@ -169,6 +169,20 @@ export const NFTProvider = ({ children }) => {
     return items;
   };
 
+  const buyNFT = async (nft) => {
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+
+    const contract = fetchContract(signer);
+    const price = ethers.utils.parseEther(nft.price.toString());
+    const transaction = await contract.createMarketSale(nft.tokenId, {
+      value: price,
+    });
+    await transaction.wait();
+  };
+
   return (
     <NFTContext.Provider
       value={{
@@ -179,6 +193,7 @@ export const NFTProvider = ({ children }) => {
         createNFT,
         fetchNFTs,
         fetchMyNFTsOrListedNFTs,
+        buyNFT,
       }}
     >
       {children}
