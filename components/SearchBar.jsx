@@ -44,7 +44,7 @@ const SearchBar = ({
         />
         <input
           type="text"
-          placeholder="Search item here"
+          placeholder="Search for NFT..."
           className="dark:bg-nft-black-2 bg-white mx-4 w-full font-poppins dark:text-white text-nft-black-1 font-normal text-xs outline-none"
           onChange={(e) => setDebouncedSearch(e.target.value)}
           value={debouncedSearch}

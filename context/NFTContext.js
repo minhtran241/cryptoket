@@ -6,10 +6,7 @@ import { Buffer } from 'buffer';
 import { create as ipfsHttpClient } from 'ipfs-http-client';
 
 import { MarketAddress, MarketAddressABI } from './constants';
-
-const PROJECT_ID = '2Irh9x5yMhXDTqpZGTh7ygsrtPE';
-const PROJECT_SECRET = '85de52df8ea4c9092af5ff9af9bec93c';
-const PROJECT_DOMAIN = 'https://cryptoket-nft.infura-ipfs.io/ipfs';
+import { PROJECT_ID, PROJECT_SECRET, PROJECT_DOMAIN } from './secret/infura';
 
 const fetchContract = (signerOrProvider) =>
   new ethers.Contract(MarketAddress, MarketAddressABI, signerOrProvider);
@@ -18,6 +15,7 @@ export const NFTContext = React.createContext();
 
 export const NFTProvider = ({ children }) => {
   const [currentAccount, setCurrentAccount] = useState('');
+  const [isLoadingNFT, setIsLoadingNFT] = useState(false);
   const nftCurrency = 'ETH';
 
   const checkIsWalletConnected = async () => {
@@ -109,10 +107,12 @@ export const NFTProvider = ({ children }) => {
       : await contract.resellToken(id, price, {
           value: listingPrice.toString(),
         });
+    setIsLoadingNFT(true);
     await transaction.wait();
   };
 
   const fetchNFTs = async () => {
+    setIsLoadingNFT(false);
     const provider = new ethers.providers.JsonRpcProvider();
     const contract = fetchContract(provider);
     const data = await contract.fetchMarketItems();
@@ -140,6 +140,7 @@ export const NFTProvider = ({ children }) => {
   };
 
   const fetchMyNFTsOrListedNFTs = async (type) => {
+    setIsLoadingNFT(false);
     const web3Modal = new Web3Modal();
     const connection = await web3Modal.connect();
     const provider = new ethers.providers.Web3Provider(connection);
@@ -184,7 +185,9 @@ export const NFTProvider = ({ children }) => {
     const transaction = await contract.createMarketSale(nft.tokenId, {
       value: price,
     });
+    setIsLoadingNFT(true);
     await transaction.wait();
+    setIsLoadingNFT(false);
   };
 
   return (
@@ -199,6 +202,7 @@ export const NFTProvider = ({ children }) => {
         fetchMyNFTsOrListedNFTs,
         buyNFT,
         createSale,
+        isLoadingNFT,
       }}
     >
       {children}

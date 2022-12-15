@@ -55,7 +55,8 @@ const PaymentBodyCmp = ({ nft, nftCurrency }) => (
 );
 
 const NFTDetails = () => {
-  const { nftCurrency, currentAccount, buyNFT } = useContext(NFTContext);
+  const { nftCurrency, currentAccount, buyNFT, isLoadingNFT } =
+    useContext(NFTContext);
   const [isLoading, setIsLoading] = useState(true);
   const [paymentModal, setPaymentModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
@@ -171,6 +172,19 @@ const NFTDetails = () => {
                 classStyles="mr-5 sm:mr-0 rounded-xl"
                 handleClick={() => setPaymentModal(false)}
               />
+            </div>
+          }
+          handleClose={() => setPaymentModal(false)}
+        />
+      )}
+      {isLoadingNFT && (
+        <Modal
+          header="Transaction processing..."
+          body={
+            <div className="flexCenter flex-col text-center">
+              <div className="relative w-52 h-52">
+                <Loader />
+              </div>
             </div>
           }
           handleClose={() => setPaymentModal(false)}
