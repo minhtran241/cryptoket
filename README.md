@@ -55,16 +55,16 @@
 </details>
 
 <!-- ABOUT THE PROJECT -->
-## About CryptoKet
+## About The Project
 
 <div align="center">
 <table>
 <tr>
 <td>
-<img src="./resources/Home.png" width="450" height="580">
+<img src="./resources/Home.png" width="450" height="520">
 </td>
 <td>
-<img src="./resources/Create Item.png" width="450" height="580">
+<img src="./resources/Create Item.png" width="450" height="520">
 </td>
 </tr>
 </table>
@@ -113,7 +113,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See [`LICENSE`] for more information.
+Distributed under the MIT License. See [`LICENSE`](https://github.com/minhtran241/cryptoket/LICENSE) for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
