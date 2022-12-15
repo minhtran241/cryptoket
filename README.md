@@ -57,30 +57,18 @@
 <!-- ABOUT THE PROJECT -->
 ## About CryptoKet
 
+<div align="center">
 <table>
 <tr>
 <td>
-<img src="./resources/Home.png" width="100%">
+<img src="./resources/Home.png" width="450" height="580">
 </td>
 <td>
-<img src="./resources/Create Item.png" width="100%">
+<img src="./resources/Create Item.png" width="450" height="580">
 </td>
 </tr>
 </table>
-
-<table>
-<tr>
-<td>
-<img src="./resources/Item.png" width="100%">
-</td>
-<td>
-<img src="./resources/Check Out.png" width="100%">
-</td>
-<td>
-<img src="./resources/Profile.png" width="100%">
-</td>
-</tr>
-</table>
+</div>
 
 CryptoKet is made using the immense power of Solidity and Next.js. This project combines futuristic elements of Web3 blockchain development and the popular culture wave of non-fungible tokens (NFT).
 
