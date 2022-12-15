@@ -18,7 +18,6 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![MIT License][license-shield]][license-url]
 
 <!-- PROJECT LOGO -->
 <br />
@@ -60,16 +59,25 @@
 
 <table>
 <tr>
-<td><img src="./resources/Home.png" width="100%">
+<td>
+<img src="./resources/Home.png" width="100%">
 </td>
-<td><img src="./resources/Create Item.png" width="100%">
+<td>
+<img src="./resources/Create Item.png" width="100%">
 </td>
-<td><img src="./resources/Item.png" width="100%">
+</tr>
+</table>
+
+<table>
+<tr>
+<td>
+<img src="./resources/Item.png" width="100%">
 </td>
-<td><img src="./resources/Check Out.png" width="100%">
+<td>
+<img src="./resources/Check Out.png" width="100%">
 </td>
-</td>
-<td><img src="./resources/Profile.png" width="100%">
+<td>
+<img src="./resources/Profile.png" width="100%">
 </td>
 </tr>
 </table>
